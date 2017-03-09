@@ -1,13 +1,21 @@
-#include "A4990MotorShield.h"
-const unsigned char A4990MotorShield::_M1DIR = 7;
-const unsigned char A4990MotorShield::_M2DIR = 8;
-const unsigned char A4990MotorShield::_M1PWM = 9;
-const unsigned char A4990MotorShield::_M2PWM = 10;
-const unsigned char A4990MotorShield::_FAULT = 6;
-boolean A4990MotorShield::_flipM1 = false;
-boolean A4990MotorShield::_flipM2 = false;
+#include "DualMotorDriverShield.h"
+unsigned char DualMotorDriverShield::_M1DIR = 7;
+unsigned char DualMotorDriverShield::_M2DIR = 8;
+unsigned char DualMotorDriverShield::_M1PWM = 9;
+unsigned char DualMotorDriverShield::_M2PWM = 10;
+unsigned char DualMotorDriverShield::_FAULT = 6;
 
-void A4990MotorShield::initPinsAndMaybeTimer()
+boolean DualMotorDriverShield::_flipM1 = false;
+boolean DualMotorDriverShield::_flipM2 = false;
+
+void DualMotorDriverShield::setPins (int M1PWM, int M1DIR, int M2PWM, int M2DIR) {
+  _M1PWM = M1PWM;
+  _M1DIR = M1DIR;
+  _M2PWM = M2PWM;
+  _M2DIR = M2DIR;
+}
+
+void DualMotorDriverShield::initPinsAndMaybeTimer()
 {
   // Initialize the pin states used by the motor driver shield
   // digitalWrite is called before and after setting pinMode.
@@ -32,7 +40,7 @@ void A4990MotorShield::initPinsAndMaybeTimer()
   pinMode(_M2DIR, OUTPUT);
   digitalWrite(_M2DIR, LOW);
   pinMode(_FAULT, INPUT_PULLUP);
-#ifdef A4990MOTORSHIELD_USE_20KHZ_PWM
+#ifdef DualMotorDriverShield_USE_20KHZ_PWM
   // timer 1 configuration
   // prescaler: clockI/O / 1
   // outputs enabled
@@ -48,7 +56,7 @@ void A4990MotorShield::initPinsAndMaybeTimer()
 }
 
 // speed should be a number between -400 and 400
-void A4990MotorShield::setM1Speed(int speed)
+void DualMotorDriverShield::setM1Speed(int speed)
 {
   init(); // initialize if necessary
     
@@ -62,7 +70,7 @@ void A4990MotorShield::setM1Speed(int speed)
   if (speed > 400)  // max 
     speed = 400;
     
-#ifdef A4990MOTORSHIELD_USE_20KHZ_PWM
+#ifdef DualMotorDriverShield_USE_20KHZ_PWM
   OCR1A = speed;
 #else
   analogWrite(_M1PWM, speed * 51 / 80); // default to using analogWrite, mapping 400 to 255
@@ -75,7 +83,7 @@ void A4990MotorShield::setM1Speed(int speed)
 }
 
 // speed should be a number between -400 and 400
-void A4990MotorShield::setM2Speed(int speed)
+void DualMotorDriverShield::setM2Speed(int speed)
 {
   init(); // initialize if necessary
     
@@ -89,7 +97,7 @@ void A4990MotorShield::setM2Speed(int speed)
   if (speed > 400)  // max PWM duty cycle
     speed = 400;
     
-#ifdef A4990MOTORSHIELD_USE_20KHZ_PWM
+#ifdef DualMotorDriverShield_USE_20KHZ_PWM
   OCR1B = speed;
 #else
   analogWrite(_M2PWM, speed * 51 / 80); // default to using analogWrite, mapping 400 to 255
@@ -103,23 +111,23 @@ void A4990MotorShield::setM2Speed(int speed)
 
 // set speed for both motors
 // speed should be a number between -400 and 400
-void A4990MotorShield::setSpeeds(int m1Speed, int m2Speed)
+void DualMotorDriverShield::setSpeeds(int m1Speed, int m2Speed)
 {
   setM1Speed(m1Speed);
   setM2Speed(m2Speed);
 }
 
-void A4990MotorShield::flipM1(boolean flip)
+void DualMotorDriverShield::flipM1(boolean flip)
 {
-  A4990MotorShield::_flipM1 = flip;
+  DualMotorDriverShield::_flipM1 = flip;
 }
 
-void A4990MotorShield::flipM2(boolean flip)
+void DualMotorDriverShield::flipM2(boolean flip)
 {
-  A4990MotorShield::_flipM2 = flip;
+  DualMotorDriverShield::_flipM2 = flip;
 }
 
-boolean A4990MotorShield::getFault()
+boolean DualMotorDriverShield::getFault()
 {
   init(); // initialize if necessary
   return digitalRead(_FAULT) == LOW;

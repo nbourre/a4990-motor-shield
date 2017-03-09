@@ -1,15 +1,16 @@
-#ifndef A4990MotorShield_h
-#define A4990MotorShield_h
+#ifndef DualMotorDriverShield_h
+#define DualMotorDriverShield_h
 
 #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__) || defined (__AVR_ATmega32U4__)
-  #define A4990MOTORSHIELD_USE_20KHZ_PWM
+  #define DualMotorDriverShield_USE_20KHZ_PWM
 #endif
 
 #include <Arduino.h>
 
-class A4990MotorShield 
+class DualMotorDriverShield 
 {
   public:
+    static void setPins (int M1PWM, int M1DIR, int M2PWM, int M2DIR);
     static void setM1Speed(int speed);
     static void setM2Speed(int speed);
     static void setSpeeds(int m1Speed, int m2Speed);
