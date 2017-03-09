@@ -20,11 +20,12 @@ class DualMotorDriverShield
     
   private:
     static void initPinsAndMaybeTimer();
-    const static unsigned char _M1DIR;
-    const static unsigned char _M2DIR;
-    const static unsigned char _M1PWM;
-    const static unsigned char _M2PWM;
-    const static unsigned char _FAULT;
+
+    static unsigned char _M1DIR;
+    static unsigned char _M2DIR;
+    static unsigned char _M1PWM;
+    static unsigned char _M2PWM;
+    static unsigned char _FAULT;
     static boolean _flipM1;
     static boolean _flipM2;
     

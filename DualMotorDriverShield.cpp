@@ -132,3 +132,9 @@ boolean DualMotorDriverShield::getFault()
   init(); // initialize if necessary
   return digitalRead(_FAULT) == LOW;
 }
+
+void DualMotorDriverShield::stopAll() {
+  init();
+  setM1Speed(0);
+  setM2Speed(0);
+}
